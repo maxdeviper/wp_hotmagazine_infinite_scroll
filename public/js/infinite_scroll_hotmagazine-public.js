@@ -36,22 +36,25 @@
 		var loader = btnContainer.find('.loader-icon-container');
 
 	    $(window).scroll(function(){
-	            if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+    			// $(window).scrollTop() - $(btnContainer).offSet().top < 
+	            // if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+	            if  ($(window).scrollTop() + $(window).height() > $(btnContainer).offset().top ){
 
 	            		if (btnContainer.find('.loader-icon-container').length < 1)
 	            		{
 	            			btnContainer.prepend(
 	            			            			'<div class="loader-icon-container">'
-	            			            			+'<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>'
+	            			            			+'<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>'
 	            			            			+'<span class="sr-only">Loading...</span>'
 	            			            			+'</div>'
 	            			 );
 	            			loader = btnContainer.find('.loader-icon-container');
 	            		}
 	            		loader.show();
-	            		loader.hide( "slow", function() {
+	            		loader.fadeOut( 8000, function(){
 	                  		loadMoreBtn.click();
-						 });
+
+	            		});
 	            }
 	    }); 
 	});
