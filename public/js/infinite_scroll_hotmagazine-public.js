@@ -71,7 +71,7 @@ var hasBeenClicked = false;
 			                  //  click the loadmore btn after 4s
 		            			setTimeout(function(){
 		                  			loadMoreBtn.click();
-			            			loader.fadeOut(6000);
+			            			loader.fadeOut(8000);
 			            			//set click to false to allow another click to work on scroll
 			            			hasBeenClicked = false;
 
