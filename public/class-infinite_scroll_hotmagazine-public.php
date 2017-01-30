@@ -100,4 +100,100 @@ class Infinite_scroll_hotmagazine_Public {
 
 	}
 
+	public function hotmagazine_load_postsl() {
+		global $hotmagazine_options;
+		$response = '';
+		$cat = $_POST['cat'];
+		$order = $_POST['order'];
+		$thumb = $_POST['thumb'];
+		$offset = $_POST['offset'];
+		$args = array(
+			'post_type' => 'post',
+			'posts_per_page' =>$order,
+			'post_status' => 'publish',
+			'offset' =>$offset,
+		    'cat' => $cat,
+		);
+		$portfolio = new WP_Query($args);
+	?>	
+
+	<?php 
+	      if($portfolio->have_posts()) :
+	             $i=1; while($portfolio->have_posts()) : $portfolio->the_post(); 
+	    ?>
+		
+
+		<div class="news-post article-post">
+			
+			<div class="row">
+				<div class="col-sm-<?php echo esc_attr($thumb); ?>">
+					<div class="post-gallery">
+						<?php if(has_post_thumbnail()){ ?>
+						<?php the_post_thumbnail(''); ?>
+						<?php }else{ ?>
+						<img src="http://placehold.it/270x200" />
+						<?php } ?>
+					<?php if($hotmagazine_options['body_style']!='' and $hotmagazine_options['body_style']=='fashion' ){ ?>
+						<div class="hover-box">
+							<a href="<?php the_permalink(); ?>"><i class="fa fa-link"></i></a>
+						</div>
+					<?php } ?>
+					</div>
+				</div>
+				<div class="col-sm-<?php echo esc_attr(12-$thumb); ?>">
+					<div class="post-content">
+						<?php 
+							
+							if($hotmagazine_options['body_style']!='' and $hotmagazine_options['body_style']=='fashion' ){ ?>
+								<?php 
+								$category_detail=get_the_category($id);//$post->ID
+								foreach($category_detail as $cd){ ?>
+								<a class="category-post <?php echo esc_html($cd->slug); ?>" href="<?php echo get_category_link( $cd->term_id ); ?>"><?php echo esc_html($cd->cat_name); ?></a> 
+
+								
+								<?php } ?>
+								<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?> </a></h2>
+								<ul class="post-tags">
+									<li><i class="fa fa-clock-o"></i><?php the_time(get_option( 'date_format' )); ?></li>
+									<li><i class="fa fa-user"></i><?php esc_html_e('by','hotmagazine'); ?> <?php the_author_posts_link(); ?></li>
+									<li> <?php comments_popup_link('<i class="fa fa-comments-o"></i><span>0</span> ','<i class="fa fa-comments-o"></i><span>1</span>','<i class="fa fa-comments-o"></i><span>%</span>','comm'); ?></li>
+									<li><i class="fa fa-eye"></i><?php echo hotmagazine_getPostViews(get_the_ID()); ?></li>
+								</ul>
+						<?php	}else{ ?>
+						
+						<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?> </a></h2>
+						
+						<ul class="post-tags">
+							<li><i class="fa fa-clock-o"></i><?php the_time(get_option( 'date_format' )); ?></li>
+							<li><i class="fa fa-user"></i><?php esc_html_e('by','hotmagazine'); ?> <?php the_author_posts_link(); ?></li>
+							<li> <?php comments_popup_link('<i class="fa fa-comments-o"></i><span>0</span> ','<i class="fa fa-comments-o"></i><span>1</span>','<i class="fa fa-comments-o"></i><span>%</span>','comm'); ?></li>
+							<li><i class="fa fa-eye"></i><?php echo hotmagazine_getPostViews(get_the_ID()); ?></li>
+						</ul>
+						<?php  if(function_exists('rw_the_post_rating')){rw_the_post_rating($postID = false, $class = 'blog-post', $schema = false);} ?>
+						<p><?php the_excerpt(); ?></p>
+							<?php if($rate!='yes' and $custom['body_style']!='politics'){ ?>
+							<div class="clear"></div>
+							<a href="<?php the_permalink(); ?>" class="read-more-button"><i class="fa fa-arrow-circle-right"></i><span><?php esc_html_e('Read More','hotmagazine'); ?></span></a>
+							<?php } ?>
+						
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		
+
+		<?php $i++; endwhile; ?>
+		<?php endif; ?>
+		<?php wp_reset_postdata(); ?>
+
+		<?php	
+			echo $response;
+			die();
+	}
+// add_action('wp_ajax_hotmagazine_load_postsl', 'hotmagazine_load_postsl');
+// add_action('wp_ajax_nopriv_hotmagazine_load_postsl', 'hotmagazine_load_postsl');
+
 }
