@@ -1,3 +1,8 @@
+window.lastScrollTop = 0;
+window.delta = 200;
+var lastPostCount = 8;
+var firstPage = true;
+var hasBeenClicked = false;
 (function( $ ) {
 	'use strict';
 
@@ -34,11 +39,14 @@
 		//$('.article-box .center-button a.load-morel').hide();
 		loadMoreBtn.hide();
 		var loader = btnContainer.find('.loader-icon-container');
-
 	    $(window).scroll(function(){
     			// $(window).scrollTop() - $(btnContainer).offSet().top < 
 	            // if  ($(window).scrollTop() == $(document).height() - $(window).height()){
-	            if  ($(window).scrollTop() + $(window).height() > $(btnContainer).offset().top ){
+				var $posts = $('.article-box #cat_all .news-post.article-post');
+				var postsCount = $posts.length;
+				var st = $(window).scrollTop();
+
+	            if  ( st + ($(window).height() ) > (btnContainer.offset().top + btnContainer.outerHeight())){
 
 	            		if (btnContainer.find('.loader-icon-container').length < 1)
 	            		{
@@ -50,11 +58,30 @@
 	            			 );
 	            			loader = btnContainer.find('.loader-icon-container');
 	            		}
-	            		loader.show();
-	            		loader.fadeOut( 8000, function(){
-	                  		loadMoreBtn.click();
+	            		if(Math.abs( st  - window.lastScrollTop) <= window.delta){
+        					return;
+	            		}
 
-	            		});
+	            		loader.show();
+	            		// only click button if this is the first loading or the previous click has increased the length of post
+	            		if (firstPage == true || (postsCount > lastPostCount)){
+	            			// when the load more btn hasn't been clicked  setTimeOut before click
+		            		if (hasBeenClicked == false) {
+			                  	firstPage = false;
+			                  //  click the loadmore btn after 4s
+		            			setTimeout(function(){
+		                  			loadMoreBtn.click();
+			            			loader.fadeOut(6000);
+			            			//set click to false to allow another click to work on scroll
+			            			hasBeenClicked = false;
+
+		            			}, 4000);
+		            			// before click execute after 4s set hasbeenClicked = true to prevent click by another scroll
+		            			hasBeenClicked = true;
+		            		}
+	            		}
+                  		lastPostCount = postsCount;
+	            		window.lastScrollTop = st;
 	            }
 	    }); 
 	});
