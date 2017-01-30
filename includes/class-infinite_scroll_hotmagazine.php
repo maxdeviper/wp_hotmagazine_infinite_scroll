@@ -170,6 +170,7 @@ class Infinite_scroll_hotmagazine {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_ajax_nopriv_hotmagazine_load_postsl', $plugin_public, 'hotmagazine_load_postsl', 5 );
+		$this->loader->add_action( 'wp_ajax_hotmagazine_load_postsl', $plugin_public, 'hotmagazine_load_postsl', 5 );
 
 	}
 
