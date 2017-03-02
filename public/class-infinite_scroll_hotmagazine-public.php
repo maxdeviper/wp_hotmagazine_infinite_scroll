@@ -164,7 +164,7 @@ class Infinite_scroll_hotmagazine_Public {
 								</ul>
 						<?php	}else{ ?>
 						
-						<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?> </a></h2>
+						<!-- <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?> </a></h2> -->
 						
 						<ul class="post-tags">
 							<li><i class="fa fa-clock-o"></i><?php the_time(get_option( 'date_format' )); ?></li>
