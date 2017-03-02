@@ -127,6 +127,9 @@ class Infinite_scroll_hotmagazine_Public {
 			
 			<div class="row">
 				<div class="col-sm-<?php echo esc_attr($thumb); ?>">
+				<div class="post-content">
+          			<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?> </a></h1>
+				</div> 
 					<div class="post-gallery">
 						<?php if(has_post_thumbnail()){ ?>
 						<?php the_post_thumbnail(''); ?>
